@@ -110,6 +110,47 @@ class ChangeTextTest {
         assertEquals(result, textToSet)
     }
 
+    @Test
+    fun testTextIsNotChangingWhenSendingEmptyField() {
+        val packageName = MODEL_PACKAGE
+        waitForPackage(packageName)
+
+        val textBeforeTest = device.findObject(By.res(packageName, "textToBeChanged")).text
+
+        device.findObject(By.res(packageName, "buttonChange")).click()
+
+        val result = device.findObject(By.res(packageName, "textToBeChanged")).text
+        assertEquals(textBeforeTest, result)
+    }
+
+    @Test
+    fun testTextIsNotChangingWhenSendingSpaces() {
+        val packageName = MODEL_PACKAGE
+        waitForPackage(packageName)
+
+        val textBeforeTest = device.findObject(By.res(packageName, "textToBeChanged")).text
+
+        device.findObject(By.res(packageName, "userInput")).text = "   "
+        device.findObject(By.res(packageName, "buttonChange")).click()
+
+        val result = device.findObject(By.res(packageName, "textToBeChanged")).text
+        assertEquals(textBeforeTest, result)
+    }
+
+    @Test
+    fun testTextIsDisplayedInAnotherActivity() {
+        val packageName = MODEL_PACKAGE
+        waitForPackage(packageName)
+
+        device.findObject(By.res(packageName, "userInput")).text = textToSet
+        device.findObject(By.res(packageName, "buttonActivity")).click()
+
+        waitForPackage(packageName)
+
+        val result = device.findObject(By.res(packageName, "text")).text
+        assertEquals(textToSet, result)
+    }
+
 }
 
 
